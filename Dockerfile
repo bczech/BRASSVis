@@ -11,7 +11,7 @@ COPY src/drawFusions.R src/drawFusions.R
 COPY src src
 ## install R-packages
 RUN Rscript src/install_packages.R
-RUN chmod +x src/drawFusions.R
 CMD ["Rscript", "src/install_packages.R"]
 
-
+RUN chown root:staff src/drawFusions.R \
+	&& chmod 777 src/drawFusions.R
