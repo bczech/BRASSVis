@@ -7,11 +7,11 @@ MAINTAINER "Bartosz Czech" bartosz.czech@upwr.edu.pl
 RUN mkdir -p src
 ## copy files
 COPY src/install_packages.R src/install_packages.R
-COPY src/drawFusions.R src/drawFusions.R
+COPY src/drawFusions.R drawFusions.R
 COPY src src
 ## install R-packages
 RUN Rscript src/install_packages.R
 CMD ["Rscript", "src/install_packages.R"]
 
-RUN chown root:staff src/drawFusions.R \
-	&& chmod 777 src/drawFusions.R
+RUN chown root:staff drawFusions.R \
+	&& chmod 777 drawFusions.R
