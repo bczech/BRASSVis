@@ -37,6 +37,4 @@ vignettes/*.pdf
 
 # R Environment Variables
 .Renviron
-
-# Gtf file
-src/Homo_sapiens.GRCh38.101.chr.gtf
+.DS_Store
