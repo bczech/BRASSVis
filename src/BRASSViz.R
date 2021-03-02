@@ -6,7 +6,6 @@ suppressMessages(library("ggplot2"))
 suppressMessages(library("grDevices"))
 suppressMessages(library("RSQLite"))
 suppressMessages(library("D3GB"))
-suppressMessages(library("glue"))
 suppressMessages(library("docopt"))
 suppressMessages(library("GenomicRanges"))
 suppressMessages(library("checkmate"))
@@ -21,7 +20,6 @@ options:
 -i --inputFile=<file> BRASS file path.\n
 -e --exonsFile=<file> annnotation file.\n
 -o --outputFile=<file> output file name.\n
---confidence=<character> confidence of fusions [default: high].\n
 --fusionFlagThreshold=<numeric> fusion flag threshold [default: 720].\n
 --transcriptSelection=<character> transcript selection [default: provided].\n
 --pdfWidth=<numeric> pdf width [default: 11.692].\n
@@ -31,18 +29,12 @@ options:
 --color1=<character> color 1 used in the visualization [default: #e5a5a5].\n
 --color2=<character> color 2 used in the visualization [default: #a7c4e5].\n
 --printExonLabels=<logical> print exon labels [default: TRUE].\n
---minConfidenceForCircosPlot=<character> minimal confidence for circos plot [default: medium].\n
---mergeDomainsOverlappingBy=<numeric> merge domains overlapping by [default: 0.9].\n
---optimizeDomainColors=<logical> optimize domain colors [default: FALSE]
 --fontSize=<numeric> font size [default: 1]" -> doc
 opt <- docopt(doc)
 
 opt$fusionFlagThreshold <- as.numeric(opt$fusionFlagThreshold)
 opt$pdfWidth <- as.numeric(opt$pdfWidth)
 opt$pdfHeight <- as.numeric(opt$pdfHeight)
-opt$printExonLabels <- as.logical(opt$printExonLabels)
-opt$mergeDomainsOverlappingBy <- as.numeric(opt$mergeDomainsOverlappingBy)
-opt$optimizeDomainColors <- as.logical(opt$optimizeDomainColors)
 opt$fontSize <- as.numeric(opt$fontSize)
 
 if(is.null(opt$inputFile)) stop("Input BEDPE file neeed to be defined!")
@@ -52,6 +44,7 @@ if(is.null(opt$exonsFile)) stop("Annotation file neeed to be defined!")
 if(is.null(opt$cytobandsFile)) message("Cytobands file not provided. Using default GRCh38 ideograms...")
 if(is.null(opt$proteinDomainsFile)) message("Protein domains file not provided.")
 
+checkmate::assert_string(opt$transcriptSelection, pattern = "provided|canonical")
 ### </MAN> ###
 
 
@@ -298,7 +291,7 @@ drawCircos <- function(fusion, fusions, cytobands, minConfidenceForCircosPlot) {
   }
 }
 
-drawProteinDomains <- function(fusion, exons1, exons2, proteinDomains, color1, color2, mergeDomainsOverlappingBy, optimizeDomainColors) {
+drawProteinDomains <- function(fusion, exons1, exons2, proteinDomains, color1, color2, mergeDomainsOverlappingBy) {
 
   exonHeight <- 0.2
   exonsY <- 0.5
@@ -434,21 +427,8 @@ drawProteinDomains <- function(fusion, exons1, exons2, proteinDomains, color1, c
     }
     return(merged)
   }
-  retainedDomains1 <- mergeSimilarDomains(retainedDomains1, as.logical(opt$mergeDomainsOverlappingBy))
-  retainedDomains2 <- mergeSimilarDomains(retainedDomains2, as.logical(opt$mergeDomainsOverlappingBy))
-
-  # if desired, reassign colors to protein domains to maximize contrast
-  if (as.logical(opt$optimizeDomainColors)) {
-    uniqueDomains <- unique(c(retainedDomains1$proteinDomainID, retainedDomains2$proteinDomainID))
-    # make rainbow of pretty pastell colors
-    colors <- rainbow(length(uniqueDomains))
-    colors <- apply(col2rgb(colors), 2, function(x) { 0.3 + y / 255 * 0.7 }) # make pastell colors
-    colors <- apply(colors, 2, function(x) {rgb(x["red"], x["green"], x["blue"])}) # convert back to rgb
-    # reassign colors
-    names(colors) <- uniqueDomains
-    retainedDomains1$color <- colors[retainedDomains1$proteinDomainID]
-    retainedDomains2$color <- colors[retainedDomains2$proteinDomainID]
-  }
+  retainedDomains1 <- mergeSimilarDomains(retainedDomains1, as.logical(0.9))
+  retainedDomains2 <- mergeSimilarDomains(retainedDomains2, as.logical(0.9))
 
   # normalize length to 1
   codingExons1$length <- codingExons1$length / (codingLength1 + codingLength2)
@@ -721,7 +701,7 @@ fusions$breakpoint1 <- as.numeric(sub(".*:", "", fusions$breakpoint1, perl = TRU
 fusions$breakpoint2 <- as.numeric(sub(".*:", "", fusions$breakpoint2, perl = TRUE))
 fusions$site1 <- rep("exon", nrow(fusions))
 fusions$site2 <- rep("exon", nrow(fusions))
-fusions$confidence <- rep(opt$confidence, nrow(fusions))
+fusions$confidence <- rep("high", nrow(fusions))
 
 pdf(opt$outputFile, onefile = TRUE, width = as.numeric(opt$pdfWidth), height = as.numeric(opt$pdfHeight), title = "Title")
 if (nrow(fusions) == 0) {
@@ -796,7 +776,7 @@ for (fusion in seq_len(nrow(fusions))) {
   message(paste0("Drawing fusion #", fusion, ": ", fusions[fusion, "gene1"], ":", fusions[fusion, "gene2"]))
 
   if(fusions[fusion, "fusion_flag"] < opt$fusionFlagThreshold) {
-    message(glue("Fusion flag lower than {opt$fusionFlagThreshold}. Omiting..."))
+    message(sprintf("Fusion flag lower than %s. Omiting...", opt$fusionFlagThreshold))
     next
   }
   # compute coverage from alignments file
@@ -1040,14 +1020,14 @@ for (fusion in seq_len(nrow(fusions))) {
 
   # draw circos plot
   par(mar = c(0, 0, 0, 0))
-  drawCircos(fusion, fusions, cytobands, opt$minConfidenceForCircosPlot)
+  drawCircos(fusion, fusions, cytobands, "medium")
   par(mar = c(0, 0, 0, 0))
 
   # draw protein domains
   plot(0, 0, type = "l", xlim = c(-0.1, 1.1), ylim = c(0, 1), bty = "n", xaxt = "n", yaxt = "n")
   par(xpd = NA)
   if (!is.null(proteinDomains))
-    drawProteinDomains(fusions[fusion, ], exons1, exons2, proteinDomains, opt$color1, opt$color2, opt$mergeDomainsOverlappingBy, opt$optimizeDomainColors)
+    drawProteinDomains(fusions[fusion, ], exons1, exons2, proteinDomains, opt$color1, opt$color2, 0.9)
   par(xpd = FALSE)
 
   # print statistics about supporting alignments

@@ -1,11 +1,11 @@
 #!/usr/bin/env Rscript
+options(repos = structure(c(CRAN = "https://cran.rstudio.com/")))
 
 install.packages("ggplot2")
 install.packages("circlize")
 install.packages("grDevices")
 install.packages("RSQLite")
 install.packages("http://d3gb.usal.es/docs/package/r/D3GB_1.1.tar.gz", repos = NULL, type = "source")
-install.packages("glue")
 install.packages("optparse")
 install.packages("docopt")
 install.packages("checkmate")
