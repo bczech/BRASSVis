@@ -19,7 +19,7 @@ Installation
 =====
 First of all, clone this repo by: `git clone https://github.com/bczech/BRASSViz`
 
-In order to use a BRASSViz, installatin of R 4.0 is required. Check [CRAN](https://cran.r-project.org/) website to download the latest R version.
+In order to use a BRASSVis, installatin of R 4.0 is required. Check [CRAN](https://cran.r-project.org/) website to download the latest R version.
 
 BRASSViz requires installing additional R packages that can be downloaded by running R script stored in [src/install_packages.R](src/install_packages.R).
 
@@ -30,7 +30,7 @@ Usage
 BRASSViz provides multiple options to visualize your BEDPE file:
 
 ```
-usage: BRASSViz.R [options]
+usage: BRASSVis.R [options]
 
 options:
 --inputFile=<file> BRASS file path.
@@ -81,7 +81,7 @@ options:
 
 ##### Generating simple visualization
 ```
-src/BRASSViz.R -i tst/T1_runs1-2_60X_vs_N1_SRR7890942_SRR7890943_30X.brass.annot.bedpe \\
+src/BRASSVis.R -i tst/T1_runs1-2_60X_vs_N1_SRR7890942_SRR7890943_30X.brass.annot.bedpe \\
 -o tst/report.pdf \\
 -e annotation/Homo_sapiens.GRCh37.75.gtf.gz \\
 --proteinDomainsFile ref/protein_domains_hg19_hs37d5_GRCh37_v2.1.0.gff3 \\
