@@ -17,17 +17,17 @@ Repository structure
 
 Installation
 =====
-First of all, clone this repo by: `git clone https://github.com/bczech/BRASSViz`
+First of all, clone this repo by: `git clone https://github.com/bczech/BRASSVis`
 
 In order to use a BRASSVis, installatin of R 4.0 is required. Check [CRAN](https://cran.r-project.org/) website to download the latest R version.
 
-BRASSViz requires installing additional R packages that can be downloaded by running R script stored in [src/install_packages.R](src/install_packages.R).
+BRASSVis requires installing additional R packages that can be downloaded by running R script stored in [src/install_packages.R](src/install_packages.R).
 
 
 Usage
 =====
 
-BRASSViz provides multiple options to visualize your BEDPE file:
+BRASSVis provides multiple options to visualize your BEDPE file:
 
 ```
 usage: BRASSVis.R [options]
