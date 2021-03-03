@@ -14,7 +14,7 @@ suppressMessages(library("checkmate"))
 
 
 ### <MAN> ###
-"usage: BRASSViz.R [options]
+"usage: BRASSVis.R [options]
 
 options:
 -i --inputFile=<file> BRASS file path.\n
