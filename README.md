@@ -89,7 +89,7 @@ Example command:
 ```
 docker run bczech_brassvis:1.0 /code/src/BRASSVis.R \
 	-i /code/tst/T1_runs1-2_60X_vs_N1_SRR7890942_SRR7890943_30X.brass.annot.bedpe \
-	-o /code/out/CPCT02320008T.pdf \
+	-o /code/out/report.pdf \
 	-e /code/annotation/Homo_sapiens.GRCh37.75.gtf.gz \
 	--proteinDomainsFile /code/ref/protein_domains_hg19_hs37d5_GRCh37_v2.1.0.gff3 \
 	--cytobandsFile /code/ref/cytobands_hg19_hs37d5_GRCh37_v2.1.0.tsv
