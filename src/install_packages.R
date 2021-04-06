@@ -1,6 +1,7 @@
 #!/usr/bin/env Rscript
 options(repos = structure(c(CRAN = "https://cran.rstudio.com/")))
 
+install.packages("data.table")
 install.packages("ggplot2")
 install.packages("circlize")
 install.packages("grDevices")
