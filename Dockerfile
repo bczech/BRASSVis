@@ -1,13 +1,12 @@
 # Base image https://hub.docker.com/u/rocker/
 FROM rocker/r-base:latest
 
+RUN apt-get update && \
+	apt-get install -y libcurl4-openssl-dev libxml2-dev
 
-## create directories
-RUN mkdir -p src
 ## copy files
-COPY src/install_packages.R src/install_packages.R
+COPY . /code
 
 ## install R-packages
-RUN Rscript src/install_packages.R
+RUN Rscript /code/src/install_packages.R
 
-#### IT HAS TO BE FINISHED ####
