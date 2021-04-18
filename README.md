@@ -79,13 +79,20 @@ options:
 ```
 #### Generating visualizations
 
-##### Generating simple visualization
+##### Generating simple visualization using docker
+Build docker container
 ```
-src/BRASSVis.R -i tst/T1_runs1-2_60X_vs_N1_SRR7890942_SRR7890943_30X.brass.annot.bedpe \\
--o tst/report.pdf \\
--e annotation/Homo_sapiens.GRCh37.75.gtf.gz \\
---proteinDomainsFile ref/protein_domains_hg19_hs37d5_GRCh37_v2.1.0.gff3 \\
---cytobandsFile ref/cytobands_hg19_hs37d5_GRCh37_v2.1.0.tsv
+docker build -t bczech_brassvis:1.0 .
+```
+
+Example command:
+```
+docker run bczech_brassvis:1.0 /code/src/BRASSVis.R \
+	-i /code/tst/T1_runs1-2_60X_vs_N1_SRR7890942_SRR7890943_30X.brass.annot.bedpe \
+	-o /code/out/report.pdf \
+	-e /code/annotation/Homo_sapiens.GRCh37.75.gtf.gz \
+	--proteinDomainsFile /code/ref/protein_domains_hg19_hs37d5_GRCh37_v2.1.0.gff3 \
+	--cytobandsFile /code/ref/cytobands_hg19_hs37d5_GRCh37_v2.1.0.tsv
 ```
 This command generates a visualization. `-i` indicates the input bedpe file, `-o` path of output file (visualization), `-e` path to genome annotation in GTF format, `--proteinDomainsFile` path to gff3 file with protein domains (included in [ref](ref/) directory), `--cytobandsFile` indicates a path to cytobands (included in [ref](ref/) directory as well).
 Note that some fusions are excluded from the analysis based on the fusion flag threshold criterion (720 set by default).
