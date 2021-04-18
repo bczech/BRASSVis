@@ -10,6 +10,7 @@ install.packages("http://d3gb.usal.es/docs/package/r/D3GB_1.1.tar.gz", repos = N
 install.packages("optparse")
 install.packages("docopt")
 install.packages("checkmate")
+install.packages("R.utils")
 if (!requireNamespace("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
 BiocManager::install("GenomicRanges")
