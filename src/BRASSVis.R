@@ -9,6 +9,7 @@ suppressMessages(library("D3GB"))
 suppressMessages(library("docopt"))
 suppressMessages(library("GenomicRanges"))
 suppressMessages(library("checkmate"))
+suppressMessages(library("R.utils"))
 
 ### </PACKAGES> ###
 
