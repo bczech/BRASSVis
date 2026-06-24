@@ -1,0 +1,25 @@
+url: https://bczech.github.io/BRASSVis/
+
+template:
+  bootstrap: 5
+
+home:
+  title: "BRASSVis — Fusion Visualization for BRASS"
+
+navbar:
+  structure:
+    left: [intro, reference, news]
+    right: [search, github]
+  components:
+    github:
+      icon: fa-github
+      href: https://github.com/bczech/BRASSVis
+
+reference:
+  - title: "Core functions"
+    desc: "Read, annotate, and visualize BRASS fusions"
+    contents:
+      - read_brass
+      - load_annotations
+      - plot_fusion
+      - brass_report
