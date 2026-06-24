@@ -1,0 +1,35 @@
+Package: BRASSVis
+Title: Visualization of Structural Variants from BRASS
+Version: 1.0.0
+Authors@R: person("Bartosz", "Czech", email = "bartosz.w.czech@gmail.com",
+                  role = c("aut", "cre"), comment = c(ORCID = "0000-0002-9908-3007"))
+Description: Visualize gene fusions and structural variants detected by
+    BRASS (BReakpoint AnalySiS) from whole-genome sequencing data. Reads
+    BEDPE files and produces publication-ready PDF reports showing
+    breakpoints, exon structure, ideograms, circos plots, and protein
+    domain retention. Based on the Arriba visualization approach adapted
+    for WGS structural variant data.
+License: GPL-3
+URL: https://github.com/bczech/BRASSVis
+BugReports: https://github.com/bczech/BRASSVis/issues
+Encoding: UTF-8
+Depends: R (>= 4.0.0)
+Imports:
+    checkmate,
+    circlize,
+    data.table,
+    GenomicRanges,
+    grDevices,
+    graphics,
+    IRanges,
+    S4Vectors,
+    stats,
+    utils
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+biocViews: Visualization, StructuralVariation, WholeGenome
+Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.0.0
